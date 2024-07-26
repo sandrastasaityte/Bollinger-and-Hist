@@ -1,0 +1,83 @@
+#
+
+# Import necessary libraries
+import pandas as pd
+import mplfinance as mpf
+
+# Load daily data
+daily = pd.read_csv('SP500_NOV2019_Hist.csv', index_col=0, parse_dates=True)
+daily.index.name = 'Date'
+
+# Display shape and first/last few rows of the daily data
+print(daily.shape)
+print(daily.head(3))
+print(daily.tail(3))
+
+# Basic plot of the daily data
+mpf.plot(daily)
+
+# Candle plot of the daily data
+mpf.plot(daily, type='candle')
+
+# Line plot of the daily data
+mpf.plot(daily, type='line')
+
+# Load yearly data for SPY
+year = pd.read_csv('SPY_20110701_20120630_Bollinger.csv', index_col=0, parse_dates=True)
+year.index.name = 'Date'
+
+# Renko plot of the yearly data
+mpf.plot(year, type='renko')
+
+# Point and figure plot of the yearly data
+mpf.plot(year, type='pnf')
+
+# OHLC plot with a 4-day moving average of the daily data
+mpf.plot(daily, type='ohlc', mav=4)
+
+# Candle plot with multiple moving averages of the daily data
+mpf.plot(daily, type='candle', mav=(3,6,9))
+
+# Candle plot with volume and multiple moving averages of the daily data
+mpf.plot(daily, type='candle', mav=(3,6,9), volume=True)
+
+# Candle plot with volume, multiple moving averages, and non-trading days shown
+mpf.plot(daily, type='candle', mav=(3,6,9), volume=True, show_nontrading=True)
+
+# Load intraday data
+intraday = pd.read_csv('SP500_NOV2019_Hist.csv', index_col=0, parse_dates=True)
+intraday = intraday.drop('Volume', axis=1)  # Volume is zero for this intraday data set
+intraday.index.name = 'Date'
+
+# Display shape and first/last few rows of the intraday data
+print(intraday.shape)
+print(intraday.head(3))
+print(intraday.tail(3))
+
+# Plot specific intraday data for a specific hour on 2019-11-06
+iday = intraday.loc['2019-11-06 15:00':'2019-11-06 16:00',:]
+mpf.plot(iday, type='candle', mav=(7,12))
+
+# Plot intraday data for 2019-11-05 to 2019-11-06
+iday = intraday.loc['2019-11-05':'2019-11-06',:]
+mpf.plot(iday, type='candle')
+
+# Candle plot with non-trading times shown for the intraday data
+mpf.plot(iday, type='candle', show_nontrading=True)
+
+# OHLC plot with non-trading times shown for the intraday data
+mpf.plot(intraday, type='ohlc', show_nontrading=True)
+
+# Line plot of the intraday data
+mpf.plot(intraday, type='line')
+
+# Load SPY data for the period from 2008 to 2018
+df = pd.read_csv('SPY_20110701_20120630.csv', index_col=0, parse_dates=True)
+
+# Display shape and first/last few rows of the SPY data
+print(df.shape)
+print(df.head(3))
+print(df.tail(3))
+
+# Bar plot with volume and multiple moving averages for a subset of the SPY data
+mpf.plot(df[700:850], type='bars', volume=True, mav=(20,40))
